@@ -1,8 +1,0 @@
-[
-{
-  "directory": "/home/jori/projects/aoc25/build",
-  "command": "/usr/bin/g++ -g -std=gnu++20 -o day01/CMakeFiles/aoc25.day01.dir/day01.cpp.o -c /home/jori/projects/aoc25/day01/day01.cpp",
-  "file": "/home/jori/projects/aoc25/day01/day01.cpp",
-  "output": "day01/CMakeFiles/aoc25.day01.dir/day01.cpp.o"
-}
-]
