@@ -1,0 +1,5 @@
+/home/jori/projects/aoc25/build/CMakeFiles/edit_cache.dir
+/home/jori/projects/aoc25/build/CMakeFiles/rebuild_cache.dir
+/home/jori/projects/aoc25/build/day01/CMakeFiles/aoc25.day01.dir
+/home/jori/projects/aoc25/build/day01/CMakeFiles/edit_cache.dir
+/home/jori/projects/aoc25/build/day01/CMakeFiles/rebuild_cache.dir
