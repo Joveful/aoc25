@@ -10,16 +10,15 @@
 
 std::string loadData(const std::string& filepath) {
     std::ifstream in(filepath);
-    if (!in) {
-        throw std::runtime_error("Could not open file");
+    if (!in.is_open()) {
+        throw std::runtime_error("Could not open file: " + filepath + "\n");
     }
     std::stringstream contents;
     contents << in.rdbuf();
     return contents.str();
 }
 
-template<typename T>
-int numOfDigits(T number) {
+int numOfDigits(long long number) {
     int digits = 0;
     while (number) {
         number /= 10;
@@ -90,8 +89,8 @@ int main(int argc, const char** argv) {
         throw std::runtime_error("Usage: ./main <filepath>\n");
     }
 
-    std::string file{argv[1]};
+    std::string path = std::string(INPUT_DIR) + "/" + argv[1];
     std::string input;
-    input = loadData(file);
-    std::cout << solve(input) << '\n';
+    input = loadData(path);
+    std::cout << "Solution: " << solve(input) << '\n';
 }

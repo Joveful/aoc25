@@ -8,10 +8,10 @@
 // Part 2 answer: 6695
 
 
-void loadData(const std::string& file, std::vector<std::pair<char, int>>& v) {
-    std::ifstream fd(file);
+void loadData(const std::string& filename, std::vector<std::pair<char, int>>& v) {
+    std::ifstream fd(filename);
     if (!fd.is_open()) {
-        std::cerr << "Error opening file: " << file << '\n';
+        std::runtime_error("Could not open file: " + filename + "\n");
     }
 
     std::string input;
@@ -49,13 +49,11 @@ int countRotations(const std::vector<std::pair<char, int>>& in) {
 
 int main(int argc, const char** argv) {
     if (argc < 2) {
-        std::cerr << "Usage: ./day01 <filename>\n";
-        return -1;
+        std::runtime_error("Usage: day01 <input_file>\n");
     }
 
-    std::string path{argv[1]};
+    std::string path = std::string(INPUT_DIR) + "/" + argv[1];
     std::vector<std::pair<char, int>> instructions;
     loadData(path, instructions);
     std::cout << "Solution: " << countRotations(instructions) << '\n';
-
 }
