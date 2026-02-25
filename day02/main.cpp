@@ -51,21 +51,21 @@ long long solve(std::string_view str) {
                 if (digits % j == 0) {
                     long long sep = std::pow(10, digits - j);
                     long long pattern = i / sep;
-                    long long ssum = 0;
+                    bool valid = false;
                     for (int k = j + j; k <= digits; k += j) {
                         long long sep2 = std::pow(10, digits - k);
                         long long p2 = i / sep2;
                         if ((p2 % (long long) std::pow(10, j)) == pattern) {
-                            // store the pattern temporarily, if the pattern breaks we reset to 0
-                            ssum = i;
+                            // pattern matches (for now)
+                            valid = true;
                         } else { 
-                            ssum = 0;
+                            valid = false;
                             break; 
                         }
                     }
 
-                    if (ssum != 0) {
-                        sum += ssum;
+                    if (valid) {
+                        sum += i;
                         break;
                     }
                 }
