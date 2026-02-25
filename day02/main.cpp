@@ -6,14 +6,16 @@
 #include <string>
 #include <ranges>
 #include <string_view>
+#include <sstream>
 
-void loadData(const std::string& filepath, std::string& s) {
+std::string loadData(const std::string& filepath) {
     std::ifstream in(filepath);
     if (!in) {
         throw std::runtime_error("Could not open file");
     }
-
-    std::getline(in, s);
+    std::stringstream contents;
+    contents << in.rdbuf();
+    return contents.str();
 }
 
 template<typename T>
@@ -47,21 +49,25 @@ long long solve(std::string_view str) {
             int digits = numOfDigits(i);
             for (int j = 1; j < digits; j++) {
                 if (digits % j == 0) {
-                    long long sep = std::pow(10, digits - j + 1);
+                    long long sep = std::pow(10, digits - j);
                     long long pattern = i / sep;
                     long long ssum = 0;
-                    for (int k = j; k < digits; k += j) {
-                        long long sep2 = std::pow(10, digits - k + 1);
+                    for (int k = j + j; k <= digits; k += j) {
+                        long long sep2 = std::pow(10, digits - k);
                         long long p2 = i / sep2;
-                        std::cout << i << " " << pattern << " " << p2 % (long long) std::pow(10, k) << '\n';
-                        if ((p2 % (long long) std::pow(10, j - 1)) == 0) {
+                        if ((p2 % (long long) std::pow(10, j)) == pattern) {
+                            // store the pattern temporarily, if the pattern breaks we reset to 0
                             ssum = i;
                         } else { 
                             ssum = 0;
-
-                            break; }
+                            break; 
+                        }
                     }
-                    sum += ssum;
+
+                    if (ssum != 0) {
+                        sum += ssum;
+                        break;
+                    }
                 }
             }
             /* Part 1
@@ -81,11 +87,11 @@ long long solve(std::string_view str) {
 
 int main(int argc, const char** argv) {
     if (argc < 2) {
-        throw std::runtime_error("Give filepath as argument\n");
+        throw std::runtime_error("Usage: ./main <filepath>\n");
     }
 
     std::string file{argv[1]};
     std::string input;
-    loadData(file, input);
+    input = loadData(file);
     std::cout << solve(input) << '\n';
 }
