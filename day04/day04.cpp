@@ -22,7 +22,6 @@ std::string loadData(const std::string& filepath) {
 constexpr auto lines(std::string_view sv) {
     return sv
         | std::views::split('\n')
-        | std::views::transform([](auto r) { return std::string_view{r}; })
         | std::ranges::to<std::vector<std::string>>();
 }
 
