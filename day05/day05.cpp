@@ -26,7 +26,9 @@ constexpr auto lines(std::string_view sv) {
         | std::ranges::to<std::vector<std::string>>();
 }
 
-int solve(std::string_view sv) {
+struct Result { int count; long long ids; };
+
+Result solve(std::string_view sv) {
     auto data = lines(sv);
 
     auto ranges = data
@@ -64,7 +66,7 @@ int solve(std::string_view sv) {
         }
         validIds += end - start + 1;
     }
-    std::println("Number of valid IDs: {}", validIds);
+    // std::println("Number of valid IDs: {}", validIds);
 
 
     int count = std::count_if(ingredients.begin(), ingredients.end(), [&](long long x) {
@@ -73,7 +75,7 @@ int solve(std::string_view sv) {
         });
     });
 
-    return count;
+    return Result{count, validIds};
 }
 
 
@@ -86,6 +88,6 @@ int main(const int argc, const char** argv) {
     std::string input;
     input = loadData(path);
 
-    int result = solve(input);
-    std::cout << "Solution: " << result << '\n';
+    auto [count, ids] = solve(input);
+    std::println("Solution: {}, {}", count, ids);
 }
