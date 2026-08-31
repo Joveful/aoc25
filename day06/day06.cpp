@@ -8,6 +8,7 @@
 #include <vector>
 #include <algorithm>
 #include <charconv>
+#include <numeric>
 
 std::string loadData(const std::string& filepath) {
     std::ifstream in(filepath);
@@ -26,7 +27,7 @@ constexpr auto lines(std::string_view sv) {
         | std::ranges::to<std::vector<std::string>>();
 }
 
-long long solve(std::string_view sv) {
+long long solvePart1(std::string_view sv) {
     auto data = lines(sv);
 
     auto values = data 
@@ -81,6 +82,67 @@ long long solve(std::string_view sv) {
     return result;
 }
 
+std::vector<std::string> rotateCCW(const std::vector<std::string>& grid) {
+    int rows = grid.size();
+    int cols = grid[0].size();
+
+    std::vector<std::string> result(cols, std::string(rows, ' '));
+
+    for (int r = 0; r < rows; ++r) {
+        for (int c = 0; c < cols; ++c) {
+            result[cols - 1 - c][r] = grid[r][c];
+        }
+    }
+
+    return result;
+}
+
+long long solvePart2(std::string_view sv) {
+    auto data = rotateCCW(lines(sv));
+
+    std::vector<long long> res;
+    std::vector<long long> v;
+    for (const auto d : data) {
+
+        const char* first = d.data();
+        const char* last = d.data() + d.size();
+
+        while (first < last) {
+            if (std::isspace(static_cast<unsigned char>(*first))) {
+                ++first;
+                continue;
+            }
+
+            int val{};
+            auto [ptr, ec] = std::from_chars(first, last, val);
+
+            if (ec == std::errc{}) {
+                v.push_back(val);
+                break;
+            }
+
+            first = ptr;
+        }
+        if (d[d.size() - 1] == '+') {
+            long long sum = std::ranges::fold_left(
+                v, 0, std::plus<>()
+            );
+            res.push_back(sum);
+            v.clear();
+        }
+
+        if (d[d.size() - 1] == '*') {
+            long long mul = std::ranges::fold_left(
+                v, 1, std::multiplies<>()
+            );
+            res.push_back(mul);
+            v.clear();
+        }
+    }
+
+    return std::ranges::fold_left(res, 0, std::plus<>());
+}
+
 
 int main(const int argc, const char** argv) {
     if (argc != 2) {
@@ -91,6 +153,6 @@ int main(const int argc, const char** argv) {
     std::string input;
     input = loadData(path);
 
-    long long result = solve(input);
+    long long result = solvePart2(input);
     std::cout << "Solution: " << result << '\n';
 }
