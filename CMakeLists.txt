@@ -10,6 +10,7 @@ add_subdirectory(day03)
 add_subdirectory(day04)
 add_subdirectory(day05)
 add_subdirectory(day06)
+add_subdirectory(day07)
 
 include(CTest)
 add_test(NAME TestDay01 COMMAND day01 test.txt)
@@ -18,6 +19,7 @@ add_test(NAME TestDay03 COMMAND day03 test.txt)
 add_test(NAME TestDay04 COMMAND day04 test.txt)
 add_test(NAME TestDay05 COMMAND day05 test.txt)
 add_test(NAME TestDay06 COMMAND day06 test.txt)
+add_test(NAME TestDay07 COMMAND day07 test.txt)
 
 set(day01PassRegex "Solution: 6")
 set(day02PassRegex "Solution: 4174379265")
@@ -25,6 +27,7 @@ set(day03PassRegex "Solution: 3121910778619")
 set(day04PassRegex "Solution: 43")
 set(day05PassRegex "Solution: 3, 14")
 set(day06PassRegex "Solution: 3263827")
+set(day07PassRegex "Solution: 21")
 
 set_property(TEST TestDay01
             PROPERTY PASS_REGULAR_EXPRESSION "${day01PassRegex}"
@@ -43,4 +46,7 @@ set_property(TEST TestDay05
 )
 set_property(TEST TestDay06
             PROPERTY PASS_REGULAR_EXPRESSION "${day06PassRegex}"
+)
+set_property(TEST TestDay07
+            PROPERTY PASS_REGULAR_EXPRESSION "${day07PassRegex}"
 )
