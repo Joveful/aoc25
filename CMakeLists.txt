@@ -27,7 +27,7 @@ set(day03PassRegex "Solution: 3121910778619")
 set(day04PassRegex "Solution: 43")
 set(day05PassRegex "Solution: 3, 14")
 set(day06PassRegex "Solution: 3263827")
-set(day07PassRegex "Solution: 21")
+set(day07PassRegex "Solution: 21, 40")
 
 set_property(TEST TestDay01
             PROPERTY PASS_REGULAR_EXPRESSION "${day01PassRegex}"

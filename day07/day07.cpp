@@ -10,6 +10,8 @@
 #include <charconv>
 #include <numeric>
 
+struct Result {int count1; long long count2;};
+
 std::string loadData(const std::string& filepath) {
     std::ifstream in(filepath);
     if (!in.is_open()) {
@@ -27,13 +29,18 @@ constexpr auto lines(std::string_view sv) {
         | std::ranges::to<std::vector<std::string>>();
 }
 
-int solvePart1(std::string_view sv) {
+Result solve(std::string_view sv) {
     auto data = lines(sv);
-    int count = 0;
+    int count1 = 0;
+    std::vector<long long> beams;
+    beams.resize(data[0].size(), 0);
 
     for (int i = 0; i < data.size() - 1; ++i) {
         for (int j = 0; j < data[0].size(); ++j) {
-            if (data[i][j] == 'S') data[i + 1][j] = '|';
+            if (data[i][j] == 'S') { 
+                data[i + 1][j] = '|';
+                beams[j] = 1;
+            }
 
             if (data[i + 1][j] == '.' && data[i][j] == '|') {
                 data[i + 1][j] = '|';
@@ -45,12 +52,17 @@ int solvePart1(std::string_view sv) {
                 if (data[i + 1][j + 1] == '.') {
                     data[i + 1][j + 1] = '|';
                 }
-                count += 1;
+                count1 += 1;
+                beams[j - 1] += beams[j];
+                beams[j + 1] += beams[j];
+                beams[j] = 0;
             }
         }
     }
+
+    long long count2 = std::ranges::fold_left(beams, 0, std::plus<>());
     
-    return count;
+    return Result{count1, count2};
 }
 
 
@@ -63,6 +75,15 @@ int main(const int argc, const char** argv) {
     std::string input;
     input = loadData(path);
 
-    int result = solvePart1(input);
-    std::cout << "Solution: " << result << '\n';
+    auto start = std::chrono::steady_clock::now();
+
+    auto [r1, r2] = solve(input);
+
+    auto end = std::chrono::steady_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
+        end - start
+    );
+
+    std::println("Solution: {}, {}", r1, r2);
+    std::println("Execution time: {} ms", duration.count());
 }
